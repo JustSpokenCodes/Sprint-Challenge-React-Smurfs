@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import { BrowserRouter as Route} from "react-router-dom";
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
@@ -19,7 +20,6 @@ class App extends Component {
       .then(res => this.setState({ smurfs: res.data }))
       .catch(err => console.error(err));
   }
-
   addSmurf = smurfs => {
     const URL = "http://localhost:3333/smurfs";
     axios 
@@ -33,6 +33,18 @@ class App extends Component {
         console.error(err);
       });
   };
+  updateSmurf = smurf => {
+    axios
+      .put(`http://localhost:3333/smurfs/${smurf.id}`, smurf)
+      .then(res => {
+        console.log(res);
+        this.setState({smurfs: res.data});
+        this.props.history.push("/smurfs");
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };   
   // add any needed code to ensure that the smurfs collection exists on state and it has data coming from the server
   // Notice what your map function is looping over and returning inside of Smurfs.
   // You'll need to make sure you have the right properties on state and pass them down to props.
@@ -41,6 +53,8 @@ class App extends Component {
       <div className="App">
         <SmurfForm />
         <Smurfs smurfs={this.state.smurfs} />
+
+        
       </div>
     );
   }
