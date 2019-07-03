@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-
+import App from "../"
 import Smurf from './Smurf';
 
 class Smurfs extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      smurfs: this.props.smurfs
+    }
+  }
+  componentDidMount (){
+    this.setState(() => {smurfs: this.props.smurfs})
+  }
   render() {
     return (
       <div className="Smurfs">
