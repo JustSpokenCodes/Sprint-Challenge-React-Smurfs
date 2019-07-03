@@ -20,19 +20,27 @@ class App extends Component {
       .then(res => this.setState({ smurfs: res.data }))
       .catch(err => console.error(err));
   }
-  addSmurf = smurfs => {
+  addSmurf = newSmurf => {
     const URL = "http://localhost:3333/smurfs";
     axios 
       .post(URL, smurfs)
       .then(res => {
-        console.log(res);
-        this.setState({ smurfs: res.data});
-        this.props.history.push("/smurfs");
+        const smurfs = res.data
+        this.setState({ smurfs })
       })
       .catch(err => {
         console.error(err);
       });
   };
+  delSmurf = id => {
+    axios 
+      .delete(`http://localhost:3333/smurfs/${id}`)
+      .then(res => {
+        const smurfs = res.data;
+        this.setState({smurfs})
+      })
+      .catch(err => console.error(err))
+  }
   updateSmurf = smurf => {
     axios
       .put(`http://localhost:3333/smurfs/${smurf.id}`, smurf)
