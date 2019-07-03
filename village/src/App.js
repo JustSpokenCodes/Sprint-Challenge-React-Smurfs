@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import { BrowserRouter as Route} from "react-router-dom";
-
 import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
+
 
 class App extends Component {
   constructor(props) {
@@ -17,13 +16,16 @@ class App extends Component {
   componentDidMount() {
     axios
       .get("http://localhost:3333/smurfs")
-      .then(res => this.setState({ smurfs: res.data }))
-      .catch(err => console.error(err));
+      .then(res => {
+        const smurfs = res.data
+        this.setState({smurfs})
+      })
+      .catch(err => console.error(err))
   }
   addSmurf = newSmurf => {
     const URL = "http://localhost:3333/smurfs";
     axios 
-      .post(URL, smurfs)
+      .post(URL, newSmurf)
       .then(res => {
         const smurfs = res.data
         this.setState({ smurfs })
@@ -41,31 +43,11 @@ class App extends Component {
       })
       .catch(err => console.error(err))
   }
-  updateSmurf = smurf => {
-    axios
-      .put(`http://localhost:3333/smurfs/${smurf.id}`, smurf)
-      .then(res => {
-        console.log(res);
-        this.setState({smurfs: res.data});
-        this.props.history.push("/smurfs");
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };   
+};
   // add any needed code to ensure that the smurfs collection exists on state and it has data coming from the server
   // Notice what your map function is looping over and returning inside of Smurfs.
   // You'll need to make sure you have the right properties on state and pass them down to props.
-  render() {
-    return (
-      <div className="App">
-        <SmurfForm />
-        <Smurfs smurfs={this.state.smurfs} />
+  render (){
 
-        
-      </div>
-    );
   }
-}
-
 export default App;
